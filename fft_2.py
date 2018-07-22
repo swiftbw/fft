@@ -22,22 +22,29 @@ class fft_obj():
         return self.yf
 
 class graph_obj():
-    def __init__(self, x, y):
-        self.x = []
-        self.y = []
-        self.x.append(x)
-        self.y.append(y)
-        self.fig, self.ax = plt.subplots()
-        self.ax.plot(self.x[0], self.y[0])
+    def __init__(self, x, y, ylim = (0.0,0.0)):
+        self.plotx = []
+        self.ploty = []
+        self.plotylim = []
+        self.addplot(x, y, ylim)
 
-    def add(self, x, y):
-        self.x.append(x)
-        self.y.append(y)
-        self.ax.plot(self.x[-1], self.y[-1])
-
-    def addplot(self, newplot)
+    def addplot(self, x, y, ylim):
+        self.plotx.append(x)
+        self.ploty.append(y)
+        if ylim == (0.0, 0.0):
+            mid = (np.max(y) + np.min(y))/2.0
+            rg = (np.max(y) - np.min(y))
+            rd = rg / (0.9 * 2.0)
+            ylim = (mid-rd,mid+rd)
+        self.plotylim.append(ylim)
         
     def display(self):
+        nplots = len(self.plotx)
+        self.fig, self.ax = plt.subplots(nplots, 1)
+        for i in range(nplots):
+            plt.subplot((nplots) * 100 + 10 + (i+1), ylim = self.plotylim[i] )
+            plt.plot(self.plotx[i], self.ploty[i])
+
         plt.draw()
         plt.waitforbuttonpress(0) # this will wait for indefinite time
         plt.close(self.fig)
@@ -110,18 +117,20 @@ def main():
       gno = note_obj(Gfreq, 4)
       pts = 2 * cno.getperiodpts()
 
-      cgo = graph_obj(cno.gett()[:pts], cno.geta()[:pts])
+      cgo = graph_obj(cno.gett()[:pts], cno.geta()[:pts], ( -10.0, 10.0))
       cgo.display()
-      ego = graph_obj(eno.gett()[:pts], eno.geta()[:pts])
+      ego = graph_obj(eno.gett()[:pts], eno.geta()[:pts], ( -10.0, 10.0))
       ego.display()
-      ggo = graph_obj(gno.gett()[:pts], gno.geta()[:pts])
+      ggo = graph_obj(gno.gett()[:pts], gno.geta()[:pts], ( -10.0, 10.0))
       ggo.display()
-      chgo = graph_obj(co.gett()[:pts], co.geta()[:pts])
-      
+      chgo = graph_obj(co.gett()[:pts], co.geta()[:pts], ( -20.0, 20.0))
+
+      go = graph_obj(cno.gett()[:pts], cno.geta()[:pts], ( -10.0, 10.0))
+      go.addplot(eno.gett()[:pts], eno.geta()[:pts], ( -10.0, 10.0))
+      go.addplot(gno.gett()[:pts], gno.geta()[:pts], ( -10.0, 10.0))
+      go.display()
       x2 = co.gett()
       y2 = co.geta()
-
-      # ego.add(co.gett()[:pts], co.geta()[:pts])
 
       chgo.display()
       
@@ -130,7 +139,7 @@ def main():
       xf = fobj.getxf()
       yf = fobj.getyf()
 
-      fchobj = graph_obj(xf[:1000], yf[:1000])
+      fchobj = graph_obj(xf[:1000], yf[:1000] ) #, (np.min(yf[:1000]) / 0.9, np.max(yf[:1000])/ 0.9) )
       
       fchobj.display()
 
