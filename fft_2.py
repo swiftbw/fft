@@ -28,7 +28,7 @@ class graph_obj():
         self.plotylim = []
         self.addplot(x, y, ylim)
 
-    def addplot(self, x, y, ylim):
+    def addplot(self, x, y, ylim = (0.0,0.0)):
         self.plotx.append(x)
         self.ploty.append(y)
         if ylim == (0.0, 0.0):
@@ -139,7 +139,7 @@ def main():
       xf = fobj.getxf()
       yf = fobj.getyf()
 
-      fchobj = graph_obj(xf[:1000], yf[:1000] ) #, (np.min(yf[:1000]) / 0.9, np.max(yf[:1000])/ 0.9) )
+      fchobj = graph_obj(xf[:1000], yf[:1000] )
       
       fchobj.display()
 
