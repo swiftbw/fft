@@ -119,15 +119,31 @@ def main():
 
       cgo = graph_obj(cno.gett()[:pts], cno.geta()[:pts], ( -10.0, 10.0))
       cgo.display()
+
+      cx2 = cno.gett()
+      cy2 = cno.geta()
+
+      fcobj = fft_obj(cx2, cy2)
+
+      fcxf = fcobj.getxf()
+      fcyf = fcobj.getyf()
+
+      fcgobj = graph_obj(fcxf[:1000], fcyf[:1000])
+
+      fcgobj.display()
+      
       ego = graph_obj(eno.gett()[:pts], eno.geta()[:pts], ( -10.0, 10.0))
       ego.display()
+
       ggo = graph_obj(gno.gett()[:pts], gno.geta()[:pts], ( -10.0, 10.0))
       ggo.display()
+
       chgo = graph_obj(co.gett()[:pts], co.geta()[:pts], ( -20.0, 20.0))
 
       go = graph_obj(cno.gett()[:pts], cno.geta()[:pts], ( -10.0, 10.0))
       go.addplot(eno.gett()[:pts], eno.geta()[:pts], ( -10.0, 10.0))
       go.addplot(gno.gett()[:pts], gno.geta()[:pts], ( -10.0, 10.0))
+      go.addplot(co.gett()[:pts], co.geta()[:pts], ( -20.0, 20.0))
       go.display()
       x2 = co.gett()
       y2 = co.geta()
